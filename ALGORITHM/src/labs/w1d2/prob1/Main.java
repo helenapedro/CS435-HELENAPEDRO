@@ -1,4 +1,4 @@
-package labs.w1d2;
+package labs.w1d2.prob1;
 
 public class Main {
     public static void main(String[] args) {

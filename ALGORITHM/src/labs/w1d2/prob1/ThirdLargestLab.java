@@ -1,4 +1,4 @@
-package labs.w1d2;
+package labs.w1d2.prob1;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
