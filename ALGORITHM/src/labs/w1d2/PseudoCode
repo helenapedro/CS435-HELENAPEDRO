@@ -1,0 +1,22 @@
+Q1: Third largest — Algorithm 1 (three passes)
+    Idea:
+        1st pass → find max
+        2nd pass → find largest ≤ max (allowing equality)
+        3rd pass → find largest ≤ 2nd (allowing equality)
+
+function thirdLargest(A):
+    max1 = A[0]
+    for x in A:
+        if x > max1:
+            max1 = x
+
+    max2 = -∞
+    for x in A:
+        if x > max2 and x <= max1:
+            max2 = x
+
+    max3 = -∞
+    for x in A:
+        if x > max3 and x <= max2:
+            max3 = x
+    return max3
