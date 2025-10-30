@@ -1,0 +1,27 @@
+Algorithm 3 — Counting method (full scan)
+    is235Array(A):
+        n = length(A)
+        c2 = c3 = c5 = cN = 0
+        for x in A:
+            if x % 2 == 0: c2++
+            if x % 3 == 0: c3++
+            if x % 5 == 0: c5++
+            if (x % 2 != 0 && x % 3 != 0 && x % 5 != 0): cN++
+        return 1 if (c2 + c3 + c5 + cN == n) else 0
+Time: one pass over n → O(n) for best/avg/worst (no early exit).
+Space: O(1) extra counters.
+
+ Algorithm 4 — Test-opposite (with early exit)
+    is235Array_fast(A):
+        for x in A:
+            divCount = 0
+            if x % 2 == 0: divCount++
+            if x % 3 == 0: divCount++
+            if x % 5 == 0: divCount++
+            if divCount >= 2: return 0      // violates the rule
+        return 1                         // no violations found
+ Time:
+     Best O(1) (fail on first element),
+     Avg O(n),
+     Worst O(n) (no violators)
+ Space: O(1).
