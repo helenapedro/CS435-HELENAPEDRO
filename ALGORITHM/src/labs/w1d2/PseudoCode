@@ -1,22 +1,85 @@
-Q1: Third largest — Algorithm 1 (three passes)
-    Idea:
-        1st pass → find max
-        2nd pass → find largest ≤ max (allowing equality)
-        3rd pass → find largest ≤ 2nd (allowing equality)
+Q1 — Comparing Algorithms: Third Largest in an Array
+Problem
+Input: array A of n integers (duplicates allowed; n ≥ 3).
+Output: the third largest value. (Example: 7,20,18,4,20,19,20,3 → 20.)
 
-function thirdLargest(A):
-    max1 = A[0]
-    for x in A:
-        if x > max1:
-            max1 = x
+Algorithm 1 — Three Passes
+    Idea
+        Find max1.
+        Find max2 ≤ max1.
+        Find max3 ≤ max2.
+        Return max3.
 
-    max2 = -∞
-    for x in A:
-        if x > max2 and x <= max1:
-            max2 = x
+    Algorithm thirdLargest_ThreePasses(A)
+        Input: array A of n integers
+        Output: third largest value (duplicates allowed)
 
-    max3 = -∞
-    for x in A:
-        if x > max3 and x <= max2:
-            max3 = x
-    return max3
+        max1 ← A[0]
+        for each x in A do
+            if x > max1 then max1 ← x
+
+        max2 ← −∞
+        for each x in A do
+            if x > max2 and x ≤ max1 then max2 ← x
+
+        max3 ← −∞
+        for each x in A do
+            if x > max3 and x ≤ max2 then max3 ← x
+        return max3
+
+    Worst-case time (counting idea)
+        1st loop: ~(c1)n comparisons/assignments
+        2nd loop: ~(c2)n
+        3rd loop: ~(c3)n
+        Total ≈ (c1+c2+c3)n + O(1) = Θ(n).
+        Space: O(1).
+
+Algorithm 2 — One Pass (required names: max, preMax, prePreMax)
+    Idea
+        Maintain the top three as we scan once; shift down when we see a new leader. Use ≥ so duplicates fill the ranks (e.g., 20,20,20).
+
+    Algorithm thirdLargest_OnePass(A)
+        Input: array A of n integers
+        Output: third largest value (duplicates allowed)
+
+         max ← −∞; preMax ← −∞; prePreMax ← −∞
+        for each x in A do
+             if x ≥ max then
+                prePreMax ← preMax
+                preMax    ← max
+                max       ← x
+            else if x ≥ preMax then
+                prePreMax ← preMax
+                preMax ← x
+            else if x ≥  prePreMax then
+                prePreMax ← x
+        return prePreMax
+
+    Worst-case time (counting idea)
+        Per element: ≤3 comparisons + a few assignments ⇒ ~k·n for small constant k.
+        So Θ(n) time, O(1) space.
+
+Correctness (sketch):
+    Loop invariant: after processing each prefix, (max, preMax, prePreMax) are the largest, 2nd, and 3rd largest of that prefix (with duplicates allowed). The update rules preserve the invariant; on exit it holds for the whole array.
+
+Algorithm 3 — Ordered Dictionary (TreeMap)
+    Idea
+    Count frequencies in an ordered map (value → count). Then traverse keys in descending order, consuming counts until the 3rd element.
+    Algorithm thirdLargest_TreeMap(A)
+      Input: array A of n integers
+      Output: third largest value (duplicates allowed)
+
+      T ← empty ordered map
+      for each x in A do
+          T[x] ← T.get(x, 0) + 1
+
+      seen ← 0
+      for each v in keys(T) in descending order do
+          repeat T[v] times:
+              seen ← seen + 1
+              if seen = 3 then return v
+
+    Worst-case time (counting idea)
+        Build map: n inserts, each O(log u) (u = #distinct values; worst case u=n) → O(n log n).
+        Descending sweep: ≤n steps → O(n).
+        Total O(n log n) time, O(u) ≤ O(n) space.

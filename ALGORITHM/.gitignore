@@ -5,6 +5,7 @@ out/
 .idea
 ALGORITHM.iml
 src/review
+.venv
 
 ### Eclipse ###
 .apt_generated
