@@ -17,8 +17,3 @@ Compile and run with any JDK (e.g., OpenJDK 24):
 javac *.java
 java Demo
 ```
-
-## Concepts linked to your course
-- Divide & Conquer (non-overlapping subproblems), Master Theorem.
-- Asymptotic analysis and algorithm choice by data structure properties.
-- Loop invariants in iterative search; recursion depth in DAC.
