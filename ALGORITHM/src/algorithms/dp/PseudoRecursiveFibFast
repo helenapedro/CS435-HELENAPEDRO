@@ -1,0 +1,30 @@
+Algorithm RecursiveFibFast(n)
+    Input: integer n ≥ 0
+    Output: nth Fibonacci number
+
+    if n < 0 then
+       return -1                // invalid input
+    if n == 0 or n == 1 then
+       return n                 // base cases
+
+    Create table[0..n]           // array to store subproblem results
+    table[0] ← 0
+    table[1] ← 1
+
+    return RecursiveFib(n)       // helper function for recursion
+
+
+SubAlgorithm RecursiveFib(n)
+    Input: integer n, uses global table[]
+    Output: nth Fibonacci number
+
+    print("Self-call at n =", n)   // trace recursion
+
+     if table[n-1] is null then
+        table[n-1] ← RecursiveFib(n - 1)
+        // compute fib(n-1) only if not already stored
+
+     table[n] ← table[n-1] + table[n-2]
+        // use stored results for subproblems
+
+     return table[n]
