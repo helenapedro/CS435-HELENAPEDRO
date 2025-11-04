@@ -1,0 +1,24 @@
+Algorithm QuickSort(A, low, high)
+    Input:  Array A[1..n], and two indices low, high
+    Output: The subarray A[low..high] sorted in ascending order
+
+    if low < high then
+        p ← Partition(A, low, high)
+        QuickSort(A, low, p - 1)
+        QuickSort(A, p + 1, high)
+
+
+Algorithm Partition(A, low, high)
+    Input:  Array A[1..n], and two indices low, high
+    Output: Final index of the pivot element after partitioning
+
+    choose pivot x ← A[high] // (pick pivot as median of three)
+    i ← low - 1
+
+    for j ← low to high - 1 do
+        if A[j] ≤ x then
+            i ← i + 1
+            swap A[i] ↔ A[j]
+
+    swap A[i + 1] ↔ A[high]
+    return i + 1

@@ -93,6 +93,12 @@ public class Knapsack01DP {
     }
 
     public static void main(String[] args) {
+        Case quiz = new Case(
+                "Caso hw",
+                new int[]{5, 6, 2, 1},   // values
+                new int[]{1, 3, 4, 2},     // weights
+                7                       // Wmax (capacity)
+        );
         Case hw = new Case(
                 "Caso hw",
                 new int[]{25, 12, 24, 16, 28},   // values
@@ -131,8 +137,9 @@ public class Knapsack01DP {
                 10
         );
 
-        runCase(hw);
-        //runCase(c0);
+        runCase(quiz);
+//        runCase(hw);
+//        runCase(c0);
 //        runCase(c1);
 //        runCase(c2);
 //        runCase(c3);

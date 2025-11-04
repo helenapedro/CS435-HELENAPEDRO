@@ -88,7 +88,12 @@ public class FractionalKnapsack {
     }
 
     public static void main(String[] args) {
-        // Mesmo conjunto do teu "Caso hw"
+        // from quiz
+        int[] v_qz = {5, 6, 2, 1};
+        int[] w_qz = {1, 3, 4, 2};
+        int W_qz = 7;
+        runCase("Fractional — Case quiz", v_qz, w_qz, W_qz);
+
         int[] v_hw = {25, 12, 24, 16, 28};
         int[] w_hw = {5, 6, 8, 2, 7};
         int W_hw = 20;

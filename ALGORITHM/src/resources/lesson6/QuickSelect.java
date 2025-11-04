@@ -3,90 +3,73 @@ package resources.lesson6;
 import java.util.Arrays;
 
 public class QuickSelect {
-    public static void main(String[] args) {
-
-        int[] arr1 = {5,6,5,7,8,5,9};
-        System.out.println("testing with " + Arrays.toString(arr1));
-
-        System.out.println(quickSelect(arr1, 0, 6, 1));
-        System.out.println(quickSelect(arr1, 0, 6, 2));
-        System.out.println(quickSelect(arr1, 0, 6, 3));
-        System.out.println(quickSelect(arr1, 0, 6, 4));
-        System.out.println(quickSelect(arr1, 0, 6, 5));
-        System.out.println(quickSelect(arr1, 0, 6, 6));
-        System.out.println(quickSelect(arr1, 0, 6, 7));
-
-        int[] arr2 = {5, 5, 1, 7};
-        System.out.println("testing with " + Arrays.toString(arr2));
-        System.out.println(quickSelect(arr2, 0, 3, 1));
-        System.out.println(quickSelect(arr2, 0, 3, 2));
-        System.out.println(quickSelect(arr2, 0, 3, 3));
-        System.out.println(quickSelect(arr2, 0, 3, 4));
-
-
+    // API 1: k-ésimo menor em todo o array (k é 1-based)
+    public static int quickSelect(int[] A, int k) {
+        if (A == null || A.length == 0) throw new IllegalArgumentException("Array vazio");
+        if (k < 1 || k > A.length) throw new IllegalArgumentException("k fora do intervalo");
+        return quickSelect(A, 0, A.length - 1, k);
     }
 
-    public static int quickSelect(int[] arr, int start, int stop, int k){
-        if (start > stop)
-            return arr[start];
-
-        int p = getMedianIndex(arr, start, stop);
-        swap(arr, p, stop);
-
-        int i = start;
-        int j = stop - 1;
-
-        while (true) {
-            while (i <= j && arr[i] < arr[stop]) i++;
-            while (i <= j && arr[j] > arr[stop]) j--;
-            if(i <= j) {
-                swap(arr, i++,j--);
+    // API 2: k-ésimo menor restrito a [low..high] (k é 1-based nesse intervalo)
+    public static int quickSelect(int[] A, int low, int high, int k) {
+        while (low <= high) {
+            int p = partitionMedian3(A, low, high); // posição final do pivô
+            int m = p - low + 1;                    // qtd de elementos <= pivô em [low..p]
+            if (k == m) {
+                return A[p];
+            } else if (k < m) {
+                high = p - 1;
+            } else {
+                low = p + 1;
+                k -= m;
             }
-            else
-                break;
         }
-
-        swap(arr, i, stop); //swap with the bigger one only
-
-        int sizeL = i - start;
-        int sizeE = 1;
-        int sizeG = stop - i;
-        if (k > sizeL && k <= sizeL + sizeE){
-            return arr[i];
-        }
-        else if (k <= sizeL){
-            return quickSelect(arr, start, i-1, k);
-        }
-        else{
-            return quickSelect(arr, i + 1, stop, k - sizeL - sizeE);
-        }
+        // fallback (não deveria chegar aqui)
+        return A[low];
     }
 
-    /*
-    Swap 2 elements in an array
-     */
-    public static void swap(int[] a, int i, int j){
-        int temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
+    // Particionamento estilo dos slides: median-of-three, pivô vai ao fim, i/j convergem, swap final do pivô.
+    private static int partitionMedian3(int[] A, int low, int high) {
+        int mid = low + (high - low) / 2;
+        int pivotIndex = medianIndex(A, low, mid, high);
+        swap(A, pivotIndex, high);
+        int pivot = A[high];
+
+        int i = low, j = high - 1;
+        while (i <= j) {
+            while (i <= j && A[i] < pivot) i++;
+            while (i <= j && A[j] > pivot) j--;
+            if (i <= j) {
+                swap(A, i, j);
+                i++; j--;
+            }
+        }
+        swap(A, i, high); // pivô vai para posição final
+        return i;
     }
 
-    /*
-    The below is to get the median with maximum comparison of 2.
-    We may change it to a logic easier to understand.
-     */
-    public static int getMedianIndex(int[] arr, int start, int stop){
-        int x = arr[start];
+    // Mediana de três (retorna o índice cujo valor é a mediana)
+    private static int medianIndex(int[] A, int a, int b, int c) {
+        int va = A[a], vb = A[b], vc = A[c];
+        if ((va <= vb && vb <= vc) || (vc <= vb && vb <= va)) return b;
+        if ((vb <= va && va <= vc) || (vc <= va && va <= vb)) return a;
+        return c;
+    }
 
-        int m = (start + stop) / 2;
-        int y = arr[m];
+    private static void swap(int[] A, int i, int j) {
+        if (i == j) return;
+        int t = A[i]; A[i] = A[j]; A[j] = t;
+    }
 
-        int z = arr[stop];
-        if ( (x - y) * (z - x) >= 0 ) // x >= y and x <= z OR x <= y and x >= z
-            return start;
-        else if ( (y - x) * (z - y) >= 0 ) // y >= x and y <= z OR y <= x and y >= z
-            return m;
-        else
-            return stop;
+    // Demo
+    public static void main(String[] args) {
+        int[] arr = {10,7,1,8,2,6,4,3,9,8,2};
+        int k = 5; // 5º menor
+        int kth = quickSelect(arr.clone(), k);
+        System.out.println("5º menor = " + kth); // esperado: 4
+        // Se quiser conferir: ordene e veja arr[k-1]
+        int[] sorted = arr.clone();
+        Arrays.sort(sorted);
+        System.out.println("Verificação sort: " + sorted[k-1]);
     }
 }
