@@ -1,0 +1,23 @@
+Goal: all Blues together at one end, all Reds at the other (say Blues on the left).
+Idea (two pointers, in-place, one pass):
+    Keep l at the next slot for Blue (left) and r at the next slot for Red (right).
+    Scan with l, swapping any Red at l with r and shrinking the right side.
+
+partition2(A):  //A has only {B, R}
+    l = 0
+    r = len(A) - 1
+    while l <= r:
+        if A[l] == 'B':
+            l += 1
+        else: // A[l] == 'R'
+            swap(A[l], A[r])
+            r -= 1 //don't advance l here; re-check swapped-in item
+Invariants
+A[0..l-1] are all B
+A[r+1..n-1] are all R
+We examine each index ≤ once ⇒ O(n)
+
+Complexities
+Time: Θ(n)
+Extra space: Θ(1) (in-place)
+Stable? No (order within a color not preserved)

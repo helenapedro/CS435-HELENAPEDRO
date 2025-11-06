@@ -1,66 +1,56 @@
 package resources.lesson6.sorting;
 
 public class MergeSort {
-    // Main function that sorts arr[l..r] using merge()
-    static void mergeSort(int arr[], int l, int r){
-        if (l < r) {
-            // Find the middle point
-            int m = l + (r - l) / 2;
-            // Sort first and second halves
-            mergeSort(arr, l, m);
-            mergeSort(arr, m + 1, r);
-            // Merge the sorted halves
-            merge(arr, l, m, r);
-        }
+    /**
+     * Public, stable merge sort. Guarantees O(n log n) time.
+     * Uses a single auxiliary buffer allocated once.
+     */
+    public static void sort(int[] a) {
+        if (a == null || a.length <= 1) return;
+        int[] aux = new int[a.length];
+        sort(a, aux, 0, a.length - 1);
     }
 
-    // Merges two subarrays of arr[].
-    // First subarray is arr[l..m]
-    // Second subarray is arr[m+1..r]
-    static void merge(int[] arr, int l, int m, int r){
-        // Find sizes of two subarrays to be merged
-        int n1 = m - l + 1;
-        int n2 = r - m;
+    /**
+     * Compatibility wrapper matching the previous API (sort subrange [l..r]).
+     */
+    static void mergeSort(int[] arr, int l, int r) {
+        if (arr == null) return;
+        if (l < 0) l = 0;
+        if (r >= arr.length) r = arr.length - 1;
+        if (l >= r) return;
+        int[] aux = new int[arr.length];
+        sort(arr, aux, l, r);
+    }
 
-        // Create temp arrays
-        int[] L = new int[n1];
-        int[] R = new int[n2];
+    private static void sort(int[] a, int[] aux, int l, int r) {
+        if (l >= r) return;
+        int m = l + (r - l) / 2;
+        sort(a, aux, l, m);
+        sort(a, aux, m + 1, r);
+        // Small optimization: skip merge if already ordered
+        if (a[m] <= a[m + 1]) return;
+        merge(a, aux, l, m, r);
+    }
 
-        // Copy data to temp arrays
-        System.arraycopy(arr, l + 0, L, 0, n1);
-        for (int j = 0; j < n2; ++j)
-            R[j] = arr[m + 1 + j];
-
-        // Merge the temp arrays
-        // Initial indices of first and second subarrays
-        int i = 0, j = 0;
-
-        // Initial index of merged subarray array
-        int k = l;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k] = L[i];
-                i++;
+    /**
+     * Merges a[l..m] and a[m+1..r] back into a using aux as scratch.
+     * Stable due to <= comparison when values are equal.
+     */
+    private static void merge(int[] a, int[] aux, int l, int m, int r) {
+        System.arraycopy(a, l, aux, l, r - l + 1);
+        int i = l;       // pointer into left half in aux
+        int j = m + 1;   // pointer into right half in aux
+        for (int k = l; k <= r; k++) {
+            if (i > m) {
+                a[k] = aux[j++];
+            } else if (j > r) {
+                a[k] = aux[i++];
+            } else if (aux[i] <= aux[j]) { // keep stability
+                a[k] = aux[i++];
+            } else {
+                a[k] = aux[j++];
             }
-            else {
-                arr[k] = R[j];
-                j++;
-            }
-            k++;
-        }
-
-        // Copy remaining elements of L[] if any
-        while (i < n1) {
-            arr[k] = L[i];
-            i++;
-            k++;
-        }
-
-        // Copy remaining elements of R[] if any
-        while (j < n2) {
-            arr[k] = R[j];
-            j++;
-            k++;
         }
     }
 }

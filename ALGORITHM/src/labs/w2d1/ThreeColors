@@ -1,0 +1,31 @@
+Idea (three pointers, one pass, in-place):
+Maintain:
+    low = next slot for B
+    mid = current scanner
+    high = next slot for G (from the end)
+
+partition3(A): //A has only {B, R, G}
+    low = 0
+    mid = 0
+    high = len(A) - 1
+    while mid <= high:
+        if A[mid] == 'B':
+            swap(A[low], A[mid])
+            low += 1
+            mid += 1
+        elif A[mid] == 'R':
+            mid += 1
+        else:  # A[mid] == 'G'
+            swap(A[mid], A[high])
+            high -= 1 // don't advance mid here; re-check swapped-in item
+
+Invariants
+A[0..low-1] = B
+A[low..mid-1] = R
+A[high+1..n-1] = G
+A[mid..high] = unknown
+
+Complexities
+Time: Θ(n)
+Extra space: Θ(1) (in-place)
+Stable? No

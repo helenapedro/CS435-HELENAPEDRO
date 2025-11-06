@@ -1,0 +1,17 @@
+partition4_counting(A):
+    cntB = cntR = cntG = cntY = 0
+    for x in A:
+        if x==B: cntB+=1
+        elif x==R: cntR+=1
+        elif x==G: cntG+=1
+        else: cntY+=1
+    i = 0
+    repeat cntB times: A[i]=B; i+=1
+    repeat cntR times: A[i]=R; i+=1
+    repeat cntG times: A[i]=G; i+=1
+    repeat cntY times: A[i]=Y; i+=1
+Complexity
+Time: Θ(n) (two linear passes)
+Space: O(1) (only 4 integers)
+In-place? Yes (no auxiliary array; just counters)
+Stable? No (order within color not preserved—usually not required here)
