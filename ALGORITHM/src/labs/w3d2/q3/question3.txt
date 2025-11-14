@@ -1,6 +1,6 @@
 Question 3. Given two Heaps H1 and H2 of the same height, give an efficient algorithm to “fuse together” to make one Heap.
 
-FUSE-HEAPS(H1, n1, H2, n2)
+Algorithmn FUSE-HEAPS(H1, n1, H2, n2)
      n <- n1 + n2
 
      create array C[1..n]
