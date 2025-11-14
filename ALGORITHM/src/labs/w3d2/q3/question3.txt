@@ -1,0 +1,36 @@
+Question 3. Given two Heaps H1 and H2 of the same height, give an efficient algorithm to “fuse together” to make one Heap.
+
+FUSE-HEAPS(H1, n1, H2, n2)
+     n <- n1 + n2
+
+     create array C[1..n]
+
+     for (i <- 1 to n1)
+        C[i] <- H1[i]
+
+     for (j <- 1 to n2)
+        C[n1 + j] <- H2[j]
+
+     build_MaxHeap_BottomUp(C, n)
+
+     return C
+
+build_MaxHeap_BottomUp(A, n)
+     for(i <- n/2 to 1) do
+          downHeap(A,i,n)
+
+downHeap(A, i, n)
+       j <- i
+       k <- maxChildIndex(A, j, n) 
+       while (k !=0)                   
+    swap(A[j], A[k])
+     j <- k
+     k <- maxChildIndex(A, j, n)
+
+
+
+
+(a)	What is the best case? O(n1+n2)
+(b)	What is the worst case? O(n1+n2)
+(c)	What is the worst case time complexity? O(n1+n2)
+

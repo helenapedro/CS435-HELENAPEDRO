@@ -1,0 +1,12 @@
+Question 2. Carry out the array-based version of HeapSort on the input array [1, 5, 2, 11, 12, 2, 3]. 
+You need to first build the heap bottom up. You need not show all the steps. 
+
+final Max-Heap final: [12, 11, 3, 1, 5, 2, 2]
+Representation (levels):
+          12
+        /    \
+      11      3
+     /  \    / \
+    1   5   2   2
+Ordered final result:
+[1, 2, 2, 3, 5, 11, 12]
