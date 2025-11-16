@@ -20,6 +20,7 @@ public class Main {
         };
 
         List<List<Integer>> components = ConnectedComponentsDFS.findComponents(adj);
+        List<List<Integer>> componentsBFS = ConnectedComponentsBFS.findComponentsBFS(adj);
 
         System.out.println("Connected Components:");
         int idx = 1;
@@ -27,6 +28,17 @@ public class Main {
             System.out.print("Component " + idx++ + ": { ");
             for (int v : comp) {
                 System.out.print(ConnectedComponentsDFS.indexToVertex(v) + " ");
+            }
+            System.out.println("}");
+        }
+
+        System.out.println("Connected Components (via BFS):");
+
+        int id = 1;
+        for (List<Integer> component : components) {
+            System.out.print("Component " + id++ + ": { ");
+            for (int v : component) {
+                System.out.print(ConnectedComponentsBFS.indexToVertex(v) + " ");
             }
             System.out.println("}");
         }
